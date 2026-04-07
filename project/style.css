@@ -1,0 +1,106 @@
+:root {
+    --primary-color: #8B1E3F;
+    --secondary-color: #FCFCFC;
+    --text-color: #52555c;
+    --background: #f6f1f4;
+    --font-family: 'Inter', 'Instrument Serif', 'Jeju Gothic', sans-serif;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+html, body {
+    margin: 0;
+    min-height: 100%;
+}
+
+body {
+    font-family: var(--font-family);
+    background: var(--background);
+    color: var(--text-color);
+}
+
+.page-shell {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
+}
+
+.hero-card {
+    width: min(100%, 520px);
+    text-align: center;
+    padding: 2.5rem 1.75rem;
+    border-radius: 24px;
+    background: white;
+    border: 1px solid rgba(139, 30, 63, 0.12);
+}
+
+#logo {
+    width: 80px;
+    height: auto;
+    margin-bottom: 1.25rem;
+}
+
+h1 {
+    margin: 0;
+    font-size: clamp(2.8rem, 4vw, 4rem);
+    color: var(--primary-color);
+}
+
+.tagline {
+    margin: 1.25rem auto 2rem;
+    color: var(--text-color);
+    font-size: 1rem;
+    line-height: 1.6;
+    max-width: 32rem;
+}
+
+.actions {
+    display: grid;
+    gap: 0.9rem;
+}
+
+.btn {
+    width: 100%;
+    border: none;
+    border-radius: 14px;
+    padding: 0.95rem 1.2rem;
+    font-size: 1rem;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.btn-primary {
+    background-color: var(--primary-color);
+    color: white;
+}
+
+.btn-secondary {
+    background: transparent;
+    color: var(--primary-color);
+    border: 1.5px solid rgba(139, 30, 63, 0.22);
+}
+
+.mascot {
+    position: absolute;
+   right: 0.1%;
+    bottom: 1%;
+    width: 6.5rem;
+    max-width: 210px;
+    pointer-events: none;
+}
+
+@media (max-width: 520px) {
+    .hero-card {
+        padding: 1.75rem 1.25rem;
+    }
+
+    .mascot {
+        right: 1rem;
+        bottom: 1rem;
+        width: 140px;
+    }
+}
