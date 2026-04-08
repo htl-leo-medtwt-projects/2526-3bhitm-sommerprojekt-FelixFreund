@@ -208,11 +208,16 @@ body {
     cursor: pointer;
     transition: all 0.3s ease;
 }
+a {
+    text-decoration: none;
+    color: inherit;
+}
 
 .btn-primary {
     background-color: var(--primary-color);
     color: white;
-    width: 2rem;
+    width: 12rem !important;
+    margin-left: 41% !important;
 }
 
 .btn-primary:hover {
@@ -262,4 +267,9 @@ body {
     margin: 0;
     padding: 0;
   
+}
+.miniLogos {
+    width: 17%;
+    height: auto;
+    margin-bottom: 1rem;
 }
