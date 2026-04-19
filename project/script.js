@@ -8,12 +8,17 @@ function renderContent() {
             <h1>Ace of Dates</h1>
             <p class="tagline">Compatibility before appearance</p>
             <div class="actions">
-                <div class="btn btn-primary">Registrieren</div>
-                <div class="btn btn-secondary">Login</div>
+                <div class="btn btn-primary" onclick="switchContent('register')" >Registrieren</div>
+                <div class="btn btn-secondary" onclick="switchContent('login')" >Login</div>
             </div>
         </section>
-        <img class="mascot" src="./img/maskotchen.png" alt="Maskottchen">
     `;
+        
+    // Mascot hinzufügen
+    let mascotLink = document.createElement('a');
+    mascotLink.href = './subPages/info.html';
+    mascotLink.innerHTML = '<img class="mascot" src="./img/maskotchen.png" alt="Maskottchen">';
+    document.body.appendChild(mascotLink);
 }
 
 // Funktion zum Wechseln des Contents
