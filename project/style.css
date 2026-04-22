@@ -5,7 +5,11 @@
     --background: #f6f1f4;
     --font-family: 'Inter', 'Instrument Serif', 'Jeju Gothic', sans-serif;
 }
+a{
+    text-decoration: none;
+    color: inherit;
 
+}
 * {
     box-sizing: border-box;
 }

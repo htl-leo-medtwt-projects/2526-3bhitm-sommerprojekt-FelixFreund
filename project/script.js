@@ -8,11 +8,13 @@ function renderContent() {
             <h1>Ace of Dates</h1>
             <p class="tagline">Compatibility before appearance</p>
             <div class="actions">
-                <div class="btn btn-primary" onclick="switchContent('register')" >Registrieren</div>
-                <div class="btn btn-secondary" onclick="switchContent('login')" >Login</div>
+            <a href="./subPages/register.php"><div class="btn btn-primary">Registrieren</div></a>
+                
+                <div class="btn btn-secondary">Login</div>
             </div>
         </section>
     `;
+    //user password: userpassword
         
     // Mascot hinzufügen
     let mascotLink = document.createElement('a');
@@ -21,7 +23,7 @@ function renderContent() {
     document.body.appendChild(mascotLink);
 }
 
-// Funktion zum Wechseln des Contents
+/*Funktion zum Wechseln des Contents
 function switchContent(contentType) {
     const app = document.getElementById('app');
     
@@ -30,12 +32,7 @@ function switchContent(contentType) {
             renderContent();
             break;
         case 'register':
-            app.innerHTML = `
-                <section class="content-section">
-                    <h2>Registrieren</h2>
-                    <p>Registrierungsseite wird hier angezeigt</p>
-                </section>
-            `;
+            window.open('./subPages/register.php');
             break;
         case 'login':
             app.innerHTML = `
@@ -49,6 +46,7 @@ function switchContent(contentType) {
             renderContent();
     }
 }
+*/
 
 // Content beim Laden der Seite erstellen
 window.addEventListener('DOMContentLoaded', renderContent);
