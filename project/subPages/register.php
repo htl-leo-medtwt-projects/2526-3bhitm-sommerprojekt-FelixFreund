@@ -1,5 +1,5 @@
 <?php
-$host = "localhost";
+$host = "db_server";
 $dbname = "aceofdates";
 $username = "aceofdates";
 $password = "123";
@@ -61,28 +61,33 @@ $conn->close();
 <html lang="de">
 <head>
     <meta charset="UTF-8">
-    <title>Registrieren - AceOfDates</title>
+    <title>Registrieren - Ace of Dates</title>
+    <link rel="stylesheet" href="../stylings/register.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
 <body>
+    <div class="register-card">
+        <h2>Registrieren</h2>
+        <?php if (!empty($message)): ?>
+            <div class="register-message"><?php echo $message; ?></div>
+        <?php endif; ?>
+        <form method="POST" action="">
+            <label for="email">E-Mail</label>
+            <input type="email" id="email" name="email" placeholder="deine@email.de" required>
 
-    <h2>Registrieren</h2>
+            <label for="password">Passwort</label>
+            <input type="password" id="password" name="password" placeholder="********" required>
 
-    <?php if (!empty($message)): ?>
-        <p><?php echo $message; ?></p>
-    <?php endif; ?>
+            <label for="confirm_password">Passwort wiederholen</label>
+            <input type="password" id="confirm_password" name="confirm_password" placeholder="********" required>
 
-    <form method="POST" action="">
-        <label>E-Mail:</label><br>
-        <input type="email" name="email" required><br><br>
-
-        <label>Passwort:</label><br>
-        <input type="password" name="password" required><br><br>
-
-        <label>Passwort wiederholen:</label><br>
-        <input type="password" name="confirm_password" required><br><br>
-
-        <button type="submit">Registrieren</button>
-    </form>
-
+            <button type="submit">Registrieren</button>
+        </form>
+        <div class="login-link">
+            Bereits registriert?
+            <a href="login.php">Jetzt einloggen</a>
+        </div>
+    </div>
+    <img class="mascot" src="../img/maskotchen.png" alt="Maskottchen">
 </body>
 </html>
