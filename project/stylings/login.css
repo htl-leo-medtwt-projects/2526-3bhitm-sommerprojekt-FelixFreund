@@ -133,6 +133,14 @@ body {
 	max-width: 18vw;
 	z-index: 10;
 }
+#banner {
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--primary-color);
+    font-family: 'Inter', sans-serif;
+    vertical-align: middle;
+    margin-left: 0.5rem;
+}
 
 @media (max-width: 520px) {
 	.login-card {
@@ -145,3 +153,4 @@ body {
 		bottom: 1vw;
 	}
 }
+

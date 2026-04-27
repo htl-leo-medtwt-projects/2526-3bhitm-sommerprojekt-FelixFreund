@@ -88,6 +88,6 @@ $conn->close();
             <a href="login.php">Jetzt einloggen</a>
         </div>
     </div>
-    <img class="mascot" src="../img/maskotchen.png" alt="Maskottchen">
+   <a href="../index.html"><img class="mascot" src="../img/maskotchen.png" alt="Maskottchen"></a>
 </body>
 </html>

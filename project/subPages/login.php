@@ -54,7 +54,7 @@ $conn->close();
 <body>
     <div id="login_header">
         <img src="../img/blinder_logo.png" alt="Logo">
-        <span style="font-size:2rem; font-weight:700; color:#222; font-family:'Inter',sans-serif; vertical-align:middle;">DateFinder</span>
+        <span id="banner">DateFinder</span>
         <div>Willkommen zurück!</div>
     </div>
     <div class="login-card">
@@ -75,6 +75,6 @@ $conn->close();
             <a href="register.php">Jetzt registrieren</a>
         </div>
     </div>
-    <img class="mascot" src="../img/maskotchen.png" alt="Maskottchen">
+   <a href="../index.html"><img class="mascot" src="../img/maskotchen.png" alt="Maskottchen"></a>
 </body>
 </html>

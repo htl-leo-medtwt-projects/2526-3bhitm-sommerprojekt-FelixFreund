@@ -10,7 +10,7 @@ function renderContent() {
             <div class="actions">
             <a href="./subPages/register.php"><div class="btn btn-primary">Registrieren</div></a>
                 
-                <div class="btn btn-secondary">Login</div>
+            <a href="./subPages/login.php"><div class="btn btn-secondary">Login</div></a>
             </div>
         </section>
     `;
