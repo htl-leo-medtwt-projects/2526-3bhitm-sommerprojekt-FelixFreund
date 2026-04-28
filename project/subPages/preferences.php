@@ -28,7 +28,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $stmt = $conn->prepare("INSERT INTO user_preferences (age, gender, interests, preferences, favorite_food, hobbies) VALUES (?, ?, ?, ?, ?, ?)");
         $stmt->bind_param("isssss", $age, $gender, $interests, $preferences, $favorite_food, $hobbies);
         if ($stmt->execute()) {
-            $message = "Daten erfolgreich gespeichert!";
+            // Daten erfolgreich gespeichert, Weiterleitung zu Schritt 2 (profile.php)
+            header('Location: profile.php');
+            exit;
         } else {
             $message = "Fehler beim Speichern der Daten.";
         }
