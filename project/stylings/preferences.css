@@ -1,0 +1,156 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap');
+
+:root {
+    --primary-color: #8B1E3F;
+    --secondary-color: #FCFCFC;
+    --text-color: #222;
+    --background: #f6f1f4;
+    --card-bg: #fff;
+    --shadow: 0 8px 32px rgba(139, 30, 63, 0.10);
+    --font-family: 'Inter', 'Instrument Serif', 'Jeju Gothic', sans-serif;
+    --progress-color: #8B1E3F;
+    --progress-bg: #e0d7de;
+}
+
+html, body {
+    margin: 0;
+    min-height: 100%;
+    font-family: var(--font-family);
+    background: var(--background);
+    color: var(--text-color);
+}
+
+body {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    justify-content: flex-start;
+    position: relative;
+}
+
+.preferences-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+}
+
+.preferences-header {
+    text-align: center;
+    margin-bottom: 1.5rem;
+    margin-top: 2.5rem;
+}
+
+.preferences-header h1 {
+    font-size: 2.4rem;
+    font-weight: 700;
+    margin: 0.2rem 0 0.2rem 0;
+}
+
+.preferences-header .step-label {
+    color: #888;
+    font-size: 1.1rem;
+    margin-top: 0.2rem;
+    margin-bottom: 0.5rem;
+}
+
+.progress-indicator {
+    width: 32px;
+    height: 3px;
+    background: var(--progress-color);
+    border-radius: 2px;
+    margin: 0 auto 0.7rem auto;
+}
+
+.preferences-card {
+    background: var(--card-bg);
+    border-radius: 18px;
+    box-shadow: var(--shadow);
+    padding: 2.5rem 2.5rem 2rem 2.5rem;
+    width: min(100%, 540px);
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    position: relative;
+}
+
+.preferences-card label {
+    font-size: 1rem;
+    color: var(--text-color);
+    margin-bottom: 0.25rem;
+    margin-top: 0.9rem;
+    font-weight: 500;
+}
+
+.preferences-card input[type="text"],
+.preferences-card input[type="number"],
+.preferences-card select {
+    width: 100%;
+    padding: 0.8rem 1rem;
+    border: none;
+    border-radius: 8px;
+    background: #f3f3f6;
+    font-size: 1.08rem;
+    margin-bottom: 0.2rem;
+    color: #555;
+    transition: box-shadow 0.2s, border 0.2s;
+    box-shadow: 0 1px 2px rgba(139, 30, 63, 0.03);
+}
+.preferences-card input:focus,
+.preferences-card select:focus {
+    outline: none;
+    border: 1.5px solid var(--primary-color);
+    background: #fff;
+}
+
+.preferences-card button[type="submit"] {
+    background: var(--primary-color);
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    padding: 0.9rem 1.5rem;
+    font-size: 1.1rem;
+    font-weight: 700;
+    margin-top: 2.1rem;
+    position: relative;
+    left: 38%;
+    cursor: pointer;
+    box-shadow: 0 2px 8px rgba(139, 30, 63, 0.08);
+    transition: all 0.2s;
+}
+.preferences-card button[type="submit"]:hover {
+    background: #a8325a;
+}
+
+.preferences-message {
+    text-align: center;
+    margin-bottom: 1rem;
+    color: var(--primary-color);
+    font-size: 1rem;
+}
+
+.mascot {
+    position: fixed;
+    right: 2vw;
+    bottom: 2vw;
+    width: 90px;
+    max-width: 18vw;
+    z-index: 10;
+}
+
+@media (max-width: 700px) {
+    .preferences-card {
+        padding: 1.2rem 0.5rem 1.2rem 0.5rem;
+        width: 98vw;
+    }
+    .preferences-header h1 {
+        font-size: 1.5rem;
+    }
+    .mascot {
+        width: 60px;
+        right: 1vw;
+        bottom: 1vw;
+    }
+}

@@ -42,7 +42,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $stmt->bind_param("ss", $email, $password_hash);
 
             if ($stmt->execute()) {
-                $message = "Registrierung erfolgreich!";
+                // Registrierung erfolgreich: Weiterleitung zu preferences.php
+                header('Location: preferences.php');
+                exit;
             } else {
                 $message = "Fehler bei der Registrierung.";
             }

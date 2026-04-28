@@ -30,8 +30,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $stmt->bind_result($user_id, $password_hash);
             $stmt->fetch();
             if (password_verify($password_input, $password_hash)) {
-                $message = "Login erfolgreich!";
-                // Hier ggf. Session starten und weiterleiten
+                // Login erfolgreich: Weiterleitung zu preferences.php
+                header('Location: preferences.php');
+                exit;
             } else {
                 $message = "Falsches Passwort.";
             }
