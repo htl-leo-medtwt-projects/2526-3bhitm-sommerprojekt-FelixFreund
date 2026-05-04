@@ -1,4 +1,5 @@
 <?php
+session_start();
 $host = "db_server";
 $dbname = "aceofdates";
 $username = "aceofdates";
@@ -42,7 +43,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $stmt->bind_param("ss", $email, $password_hash);
 
             if ($stmt->execute()) {
-                // Registrierung erfolgreich: Weiterleitung zu preferences.php
+                // Registrierung erfolgreich: Session speichern und zu preferences.php leiten
+                $_SESSION['user_id'] = $stmt->insert_id;
+                $_SESSION['email'] = $email;
                 header('Location: preferences.php');
                 exit;
             } else {

@@ -1,0 +1,454 @@
+/* Home Page Styling */
+
+.home-container {
+    min-height: 100vh;
+    background: var(--background);
+    display: flex;
+    flex-direction: column;
+}
+
+/* Navigation Bar */
+.navbar {
+    background: white;
+    border-bottom: 1px solid rgba(139, 30, 63, 0.1);
+    padding: 1rem 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.nav-logo img {
+    height: 40px;
+    width: auto;
+}
+
+.nav-menu {
+    display: flex;
+    gap: 2rem;
+    align-items: center;
+}
+
+.nav-item {
+    color: var(--text-color);
+    font-weight: 500;
+    transition: color 0.3s ease;
+    text-decoration: none;
+}
+
+.nav-item:hover {
+    color: var(--primary-color);
+}
+
+.nav-item.active {
+    color: var(--primary-color);
+    border-bottom: 2px solid var(--primary-color);
+    padding-bottom: 0.25rem;
+}
+
+.nav-item.logout {
+    color: #d9534f;
+    background: rgba(217, 83, 79, 0.1);
+    padding: 0.5rem 1rem;
+    border-radius: 6px;
+}
+
+/* Main Content */
+.page-shell {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
+}
+
+/* Dating Cards Container */
+.dating-cards-container {
+    position: relative;
+    width: 100%;
+    max-width: 500px;
+    aspect-ratio: 9/16;
+    perspective: 1000px;
+}
+
+/* Cards Slider */
+.cards-slider {
+    position: relative;
+    width: 100%;
+    height: 100%;
+}
+
+/* Dating Card */
+.dating-card {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    transition: opacity 0.4s ease;
+    pointer-events: none;
+    display: flex;
+    flex-direction: column;
+    background: white;
+    border-radius: 20px;
+    box-shadow: 0 10px 40px rgba(139, 30, 63, 0.15);
+    overflow: hidden;
+}
+
+.dating-card.active {
+    opacity: 1;
+    pointer-events: auto;
+    z-index: 10;
+}
+
+.dating-card.animated {
+    animation: cardSwipe 0.5s ease-in-out forwards;
+}
+
+.dating-card.animated.liked {
+    animation: cardSwipeRight 0.5s ease-in-out forwards;
+}
+
+.dating-card.animated.disliked {
+    animation: cardSwipeLeft 0.5s ease-in-out forwards;
+}
+
+@keyframes cardSwipeRight {
+    from {
+        opacity: 1;
+        transform: translateX(0) rotateZ(0);
+    }
+    to {
+        opacity: 0;
+        transform: translateX(100%) rotateZ(20deg);
+    }
+}
+
+@keyframes cardSwipeLeft {
+    from {
+        opacity: 1;
+        transform: translateX(0) rotateZ(0);
+    }
+    to {
+        opacity: 0;
+        transform: translateX(-100%) rotateZ(-20deg);
+    }
+}
+
+/* Card Image */
+.card-image-container {
+    width: 100%;
+    height: 60%;
+    overflow: hidden;
+    background: linear-gradient(135deg, var(--primary-color), #c73560);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.card-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* Card Content */
+.card-content {
+    height: 40%;
+    padding: 1.5rem;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+}
+
+.card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 1rem;
+    gap: 1rem;
+}
+
+.card-title {
+    margin: 0;
+    font-size: 1.5rem;
+    color: var(--primary-color);
+    flex: 1;
+}
+
+.compatibility-badge {
+    background: linear-gradient(135deg, var(--primary-color), #c73560);
+    color: white;
+    padding: 0.5rem 0.75rem;
+    border-radius: 50%;
+    min-width: 50px;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 1.1rem;
+    box-shadow: 0 4px 12px rgba(139, 30, 63, 0.3);
+}
+
+.compat-percentage {
+    font-size: 1.2rem;
+}
+
+.card-details {
+    font-size: 0.9rem;
+    color: var(--text-color);
+    line-height: 1.6;
+    flex: 1;
+}
+
+.card-details p {
+    margin: 0.3rem 0;
+    display: flex;
+    justify-content: space-between;
+}
+
+.card-details strong {
+    color: var(--primary-color);
+    font-weight: 600;
+}
+
+/* Navigation Controls */
+.cards-controls {
+    position: absolute;
+    bottom: 80px;
+    left: 0;
+    right: 0;
+    display: flex;
+    justify-content: space-between;
+    padding: 0 1rem;
+    z-index: 5;
+    pointer-events: none;
+}
+
+.control-btn {
+    background: white;
+    border: 2px solid var(--primary-color);
+    color: var(--primary-color);
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    font-size: 1.5rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+    pointer-events: auto;
+    font-weight: bold;
+}
+
+.control-btn:hover:not(:disabled) {
+    background: var(--primary-color);
+    color: white;
+    transform: scale(1.1);
+}
+
+.control-btn:disabled {
+    opacity: 0.3;
+    cursor: not-allowed;
+}
+
+/* Action Buttons */
+.action-buttons {
+    position: absolute;
+    bottom: 20px;
+    left: 0;
+    right: 0;
+    display: flex;
+    justify-content: center;
+    gap: 2rem;
+    z-index: 5;
+}
+
+.action-btn {
+    width: 70px;
+    height: 70px;
+    border-radius: 50%;
+    border: none;
+    font-size: 2rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+}
+
+.action-btn:hover:not(:disabled) {
+    transform: scale(1.1);
+}
+
+.action-btn:disabled {
+    opacity: 0.3;
+    cursor: not-allowed;
+}
+
+.dislike-btn {
+    background: white;
+    color: #d9534f;
+    border: 3px solid #d9534f;
+}
+
+.dislike-btn:hover:not(:disabled) {
+    background: #d9534f;
+    color: white;
+}
+
+.like-btn {
+    background: linear-gradient(135deg, var(--primary-color), #c73560);
+    color: white;
+    border: none;
+}
+
+.like-btn:hover:not(:disabled) {
+    box-shadow: 0 8px 25px rgba(139, 30, 63, 0.4);
+}
+
+.icon {
+    display: block;
+}
+
+/* Progress Info */
+.progress-info {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    background: rgba(139, 30, 63, 0.1);
+    color: var(--primary-color);
+    padding: 0.5rem 1rem;
+    border-radius: 20px;
+    font-weight: 600;
+    font-size: 0.9rem;
+    z-index: 5;
+}
+
+/* No Partners Found */
+.no-partners,
+.no-more-partners {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    background: white;
+    padding: 2rem;
+    border-radius: 15px;
+    box-shadow: 0 10px 40px rgba(139, 30, 63, 0.15);
+    z-index: 10;
+}
+
+.no-partners p,
+.no-more-partners p {
+    margin: 0;
+    color: var(--text-color);
+    font-size: 1.1rem;
+}
+
+/* Mascot */
+.mascot {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    width: 80px;
+    height: auto;
+    cursor: pointer;
+    transition: transform 0.3s ease;
+}
+
+.mascot:hover {
+    transform: scale(1.1) rotate(-5deg);
+}
+
+/* Responsive Design */
+@media (max-width: 600px) {
+    .navbar {
+        flex-direction: column;
+        gap: 1rem;
+        padding: 1rem;
+    }
+
+    .nav-menu {
+        flex-wrap: wrap;
+        gap: 1rem;
+        justify-content: center;
+    }
+
+    .nav-item {
+        font-size: 0.9rem;
+    }
+
+    .page-shell {
+        padding: 1rem;
+    }
+
+    .dating-cards-container {
+        max-width: 100%;
+    }
+
+    .card-content {
+        padding: 1rem;
+    }
+
+    .card-title {
+        font-size: 1.2rem;
+    }
+
+    .compatibility-badge {
+        min-width: 45px;
+        height: 45px;
+        font-size: 0.9rem;
+    }
+
+    .action-buttons {
+        gap: 1.5rem;
+    }
+
+    .action-btn {
+        width: 60px;
+        height: 60px;
+        font-size: 1.5rem;
+    }
+
+    .control-btn {
+        width: 40px;
+        height: 40px;
+        font-size: 1.2rem;
+    }
+
+    .mascot {
+        width: 60px;
+    }
+}
+
+@media (max-width: 400px) {
+    .dating-cards-container {
+        aspect-ratio: auto;
+        height: 70vh;
+    }
+
+    .card-details {
+        font-size: 0.85rem;
+    }
+
+    .action-buttons {
+        bottom: 10px;
+        gap: 1rem;
+    }
+
+    .action-btn {
+        width: 55px;
+        height: 55px;
+        font-size: 1.3rem;
+    }
+
+    .progress-info {
+        font-size: 0.8rem;
+        top: 10px;
+        right: 10px;
+    }
+}

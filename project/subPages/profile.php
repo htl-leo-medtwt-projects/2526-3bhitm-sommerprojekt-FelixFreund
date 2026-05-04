@@ -1,5 +1,12 @@
 <?php
 session_start();
+
+// Prüfe ob Benutzer angemeldet ist
+if (!isset($_SESSION['user_id'])) {
+    header('Location: login.php');
+    exit;
+}
+
 $host = "db_server";
 $dbname = "aceofdates";
 $username = "aceofdates";
@@ -15,6 +22,7 @@ if ($conn->connect_error) {
 
 $message = "";
 $profile_image_path = "../img/profile_placeholder.png";
+$user_id = $_SESSION['user_id'];
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Bild-Upload
@@ -35,18 +43,31 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if (empty($personality) || empty($hobby)) {
         $message = "Bitte alle Felder ausfüllen.";
     } else {
-        // preferences aus Session holen (angenommen, sie wurden dort gespeichert)
-        $user_preferences = isset($_SESSION['user_preferences']) ? $_SESSION['user_preferences'] : [];
-        // Hier könntest du die Daten zusammenführen und speichern
-        // Beispiel: $user_preferences['personality'] = $personality; usw.
-        $stmt = $conn->prepare("INSERT INTO user_profiles (personality, hobby, profile_image) VALUES (?, ?, ?)");
-        $stmt->bind_param("sss", $personality, $hobby, $profile_image_path);
+        // Prüfe ob bereits Profil existiert
+        $check = $conn->prepare("SELECT id FROM profiles WHERE id = ?");
+        $check->bind_param("i", $user_id);
+        $check->execute();
+        $check->store_result();
+
+        if ($check->num_rows > 0) {
+            // Update existierendes Profil
+            $stmt = $conn->prepare("UPDATE profiles SET personality=?, hobby=?, image_path=? WHERE id=?");
+            $stmt->bind_param("sssi", $personality, $hobby, $profile_image_path, $user_id);
+        } else {
+            // Neues Profil
+            $stmt = $conn->prepare("INSERT INTO profiles (id, personality, hobby, image_path) VALUES (?, ?, ?, ?)");
+            $stmt->bind_param("isss", $user_id, $personality, $hobby, $profile_image_path);
+        }
+        
         if ($stmt->execute()) {
-            $message = "Profil erfolgreich erstellt!";
+            // Profil erfolgreich erstellt/aktualisiert, zur home.php leiten
+            header('Location: home.php');
+            exit;
         } else {
             $message = "Fehler beim Speichern des Profils.";
         }
         $stmt->close();
+        $check->close();
     }
 }
 $conn->close();

@@ -1,4 +1,12 @@
 <?php
+session_start();
+
+// Prüfe ob Benutzer angemeldet ist
+if (!isset($_SESSION['user_id'])) {
+    header('Location: login.php');
+    exit;
+}
+
 $host = "db_server";
 $dbname = "aceofdates";
 $username = "aceofdates";
@@ -13,6 +21,7 @@ if ($conn->connect_error) {
 }
 
 $message = "";
+$user_id = $_SESSION['user_id'];
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $age = trim($_POST["age"]);
@@ -25,8 +34,22 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if (empty($age) || empty($gender) || empty($interests) || empty($preferences) || empty($favorite_food) || empty($hobbies)) {
         $message = "Bitte alle Felder ausfüllen.";
     } else {
-        $stmt = $conn->prepare("INSERT INTO user_preferences (age, gender, interests, preferences, favorite_food, hobbies) VALUES (?, ?, ?, ?, ?, ?)");
-        $stmt->bind_param("isssss", $age, $gender, $interests, $preferences, $favorite_food, $hobbies);
+        // Prüfe ob bereits Preferences existieren
+        $check = $conn->prepare("SELECT id FROM user_preferences WHERE id = ?");
+        $check->bind_param("i", $user_id);
+        $check->execute();
+        $check->store_result();
+
+        if ($check->num_rows > 0) {
+            // Update existierende Preferences
+            $stmt = $conn->prepare("UPDATE user_preferences SET age=?, gender=?, interests=?, preferences=?, favorite_food=?, hobbies=? WHERE id=?");
+            $stmt->bind_param("ssssssi", $age, $gender, $interests, $preferences, $favorite_food, $hobbies, $user_id);
+        } else {
+            // Neue Preferences
+            $stmt = $conn->prepare("INSERT INTO user_preferences (id, age, gender, interests, preferences, favorite_food, hobbies) VALUES (?, ?, ?, ?, ?, ?, ?)");
+            $stmt->bind_param("issssss", $user_id, $age, $gender, $interests, $preferences, $favorite_food, $hobbies);
+        }
+        
         if ($stmt->execute()) {
             // Daten erfolgreich gespeichert, Weiterleitung zu Schritt 2 (profile.php)
             header('Location: profile.php');
@@ -35,6 +58,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $message = "Fehler beim Speichern der Daten.";
         }
         $stmt->close();
+        $check->close();
     }
 }
 $conn->close();

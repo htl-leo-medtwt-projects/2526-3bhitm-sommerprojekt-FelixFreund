@@ -1,4 +1,5 @@
 <?php
+session_start();
 $host = "db_server";
 $dbname = "aceofdates";
 $username = "aceofdates";
@@ -30,8 +31,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $stmt->bind_result($user_id, $password_hash);
             $stmt->fetch();
             if (password_verify($password_input, $password_hash)) {
-                // Login erfolgreich: Weiterleitung zu preferences.php
-                header('Location: preferences.php');
+                // Login erfolgreich: Session speichern und zu home.php leiten
+                $_SESSION['user_id'] = $user_id;
+                $_SESSION['email'] = $email;
+                header('Location: home.php');
                 exit;
             } else {
                 $message = "Falsches Passwort.";
