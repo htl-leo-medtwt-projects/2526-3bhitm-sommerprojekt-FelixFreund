@@ -147,9 +147,9 @@ $conn->close();
             </a>
             <div class="nav-menu">
                 <a href="home.php" class="nav-item active">Date Suche</a>
-                <a href="preferences.php" class="nav-item">Einstellungen</a>
-                <a href="" class="nav-item">Posteingang</a>
-                <a href="logout.php" class="nav-item logout">Logout</a>
+                <a href="" class="nav-item">Einstellungen</a>
+                <a href="profile_view.php" class="nav-item">Profil</a>
+                <a href="" class="nav-item">Next Date</a>
             </div>
         </nav>
 
