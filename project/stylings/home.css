@@ -66,8 +66,8 @@
 .dating-cards-container {
     position: relative;
     width: 100%;
-    max-width: 500px;
-    aspect-ratio: 9/16;
+    max-width: 400px;
+    height: 600px;
     perspective: 1000px;
 }
 
@@ -76,13 +76,15 @@
     position: relative;
     width: 100%;
     height: 100%;
+    position: relative;
+    left: 8%;
 }
 
 /* Dating Card */
 .dating-card {
     position: absolute;
-    width: 100%;
-    height: 100%;
+    width: 80%;
+    height: 85%;
     opacity: 0;
     transition: opacity 0.4s ease;
     pointer-events: none;
@@ -137,7 +139,7 @@
 /* Card Image */
 .card-image-container {
     width: 100%;
-    height: 60%;
+    height: 70%;
     overflow: hidden;
     background: linear-gradient(135deg, var(--primary-color), #c73560);
     display: flex;
@@ -153,7 +155,7 @@
 
 /* Card Content */
 .card-content {
-    height: 40%;
+    height: 50%;
     padding: 1.5rem;
     overflow-y: auto;
     display: flex;
@@ -214,13 +216,14 @@
 
 /* Navigation Controls */
 .cards-controls {
-    position: absolute;
+    position: absolute; 
     bottom: 80px;
-    left: 0;
+    left: -12%;
     right: 0;
     display: flex;
-    justify-content: space-between;
-    padding: 0 1rem;
+       justify-content: space-between;
+       width: 30rem;
+    padding: 0 0.5rem;
     z-index: 5;
     pointer-events: none;
 }
@@ -256,8 +259,8 @@
 /* Action Buttons */
 .action-buttons {
     position: absolute;
-    bottom: 20px;
-    left: 0;
+    bottom: 0.7rem;
+    left: -4.5%;
     right: 0;
     display: flex;
     justify-content: center;
@@ -317,7 +320,7 @@
 .progress-info {
     position: absolute;
     top: 15px;
-    right: 15px;
+    right: -5%;
     background: rgba(139, 30, 63, 0.1);
     color: var(--primary-color);
     padding: 0.5rem 1rem;

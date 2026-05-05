@@ -148,7 +148,7 @@ $conn->close();
             <div class="nav-menu">
                 <a href="home.php" class="nav-item active">Date Suche</a>
                 <a href="preferences.php" class="nav-item">Einstellungen</a>
-                <a href="profile.php" class="nav-item">Profil</a>
+                <a href="" class="nav-item">Posteingang</a>
                 <a href="logout.php" class="nav-item logout">Logout</a>
             </div>
         </nav>
@@ -175,8 +175,6 @@ $conn->close();
                                         <p><strong>Alter:</strong> <?php echo htmlspecialchars($partner['age']); ?></p>
                                         <p><strong>Geschlecht:</strong> <?php echo htmlspecialchars($partner['gender']); ?></p>
                                         <p><strong>Hobby:</strong> <?php echo htmlspecialchars($partner['hobby']); ?></p>
-                                        <p><strong>Interessen:</strong> <?php echo htmlspecialchars($partner['interests']); ?></p>
-                                        <p><strong>Lieblingsessen:</strong> <?php echo htmlspecialchars($partner['favorite_food']); ?></p>
                                     </div>
                                 </div>
                             </div>
