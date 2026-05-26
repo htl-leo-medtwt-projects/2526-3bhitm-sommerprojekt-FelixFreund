@@ -96,13 +96,21 @@ $conn->close();
                     <option value="51+">51+</option>
                 </select>
 
-                <label for="gender">Geschlecht</label>
-                <select id="gender" name="gender" required>
-                    <option value="">Wähle dein Geschlecht</option>
-                    <option value="männlich">Männlich</option>
-                    <option value="weiblich">Weiblich</option>
-                    <option value="divers">Divers</option>
-                </select>
+                <label>Geschlecht</label>
+                <div class="gender-options">
+                    <label class="gender-option">
+                        <input type="radio" id="gender-male" name="gender" value="männlich" required <?php echo isset($_POST['gender']) && $_POST['gender'] === 'männlich' ? 'checked' : ''; ?> >
+                        <span>Männlich</span>
+                    </label>
+                    <label class="gender-option">
+                        <input type="radio" id="gender-female" name="gender" value="weiblich" <?php echo isset($_POST['gender']) && $_POST['gender'] === 'weiblich' ? 'checked' : ''; ?> >
+                        <span>Weiblich</span>
+                    </label>
+                    <label class="gender-option">
+                        <input type="radio" id="gender-diverse" name="gender" value="divers" <?php echo isset($_POST['gender']) && $_POST['gender'] === 'divers' ? 'checked' : ''; ?> >
+                        <span>Divers</span>
+                    </label>
+                </div>
 
                 <label for="interests">Interessen</label>
                 <select id="interests" name="interests" required>

@@ -36,19 +36,13 @@ if (!$current_user) {
     exit;
 }
 
-// Hole das Profil des aktuellen Benutzers
-$user_profile = $conn->prepare("SELECT personality, hobby, image_path FROM profiles WHERE id = ?");
-$user_profile->bind_param("i", $user_id);
-$user_profile->execute();
-$user_profile_result = $user_profile->get_result();
-$current_profile = $user_profile_result->fetch_assoc();
-$user_profile->close();
-
-if (!$current_profile) {
-    // Benutzer hat noch kein Titelblatt erstellt
-    header('Location: profile.php');
-    exit;
-}
+// Profil aus DB laden
+$stmt = $conn->prepare("SELECT image_path FROM profiles WHERE id = ?");
+$stmt->bind_param("i", $_SESSION['user_id']);
+$stmt->execute();
+$result = $stmt->get_result()->fetch_assoc();
+$avatar = $result['image_path'] ?? '../img/profile_placeholder.png';
+$stmt->close();
 
 // Hole alle anderen Benutzer mit deren Preferences und Profilen
 $all_users = $conn->prepare("

@@ -25,17 +25,12 @@ $profile_image_path = "../img/profile_placeholder.png";
 $user_id = $_SESSION['user_id'];
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    // Bild-Upload
-    if (isset($_FILES['profile_image']) && $_FILES['profile_image']['error'] == 0) {
-        $target_dir = "../img/uploads/";
-        if (!is_dir($target_dir)) {
-            mkdir($target_dir, 0777, true);
-        }
-        $target_file = $target_dir . basename($_FILES["profile_image"]["name"]);
-        if (move_uploaded_file($_FILES["profile_image"]["tmp_name"], $target_file)) {
-            $profile_image_path = $target_file;
-        }
-    }
+   // Kein Upload mehr — festes Avatar-Bild aus dem Grid
+$profile_image_path = "../img/profile_placeholder.png";
+
+if (!empty($_POST['profile_image_path'])) {
+    $profile_image_path = htmlspecialchars($_POST['profile_image_path']);
+}
 
     $personality = trim($_POST["personality"]);
     $hobby = trim($_POST["hobby"]);
@@ -90,33 +85,86 @@ $conn->close();
             <?php if (!empty($message)): ?>
                 <div class="profile-message"><?php echo $message; ?></div>
             <?php endif; ?>
-            <form method="POST" action="" enctype="multipart/form-data">
-                <label for="profile_image">Profilbild</label>
-                <div class="profile-image-preview">
-                    <img id="preview" src="<?php echo $profile_image_path; ?>" alt="Profilbild">
-                </div>
-                <input type="file" id="profile_image" name="profile_image" accept="image/*" onchange="previewImage(event)">
+           <form method="POST" action="" enctype="multipart/form-data">
 
-                <label for="personality">Bulletpoint über Persönlichkeit</label>
-                <input type="text" id="personality" name="personality" placeholder="z.B. Spontan & reiselustig" required>
+    <label>Profilbild wählen</label>
+    <!-- Verstecktes Feld speichert den gewählten Pfad -->
+    <input type="hidden" id="selected_avatar" name="profile_image_path" value="">
 
-                <label for="hobby">Lieblingshobby</label>
-                <input type="text" id="hobby" name="hobby" placeholder="z.B. Surfing" required>
+    <!-- 3x3 Avatar-Grid -->
+    <div class="avatar-grid" id="avatarGrid">
+        <div class="avatar-item" data-src="../img/avatars/avatar1.png">
+            <div class="avatar-img-wrap">
+                <img src="../img/1_herz.png" alt="Avatar 1">
+            </div>
+            <div class="avatar-check">
+                <svg viewBox="0 0 12 10" fill="none" stroke="#fff" stroke-width="2.5">
+                    <polyline points="1,5 4.5,8.5 11,1"/>
+                </svg>
+            </div>
+        </div>
+  
+        <div class="avatar-item" data-src="../img/1_blatt.png">
+            <div class="avatar-img-wrap"><img src="../img/1_blatt.png" alt="Avatar 2"></div>
+            <div class="avatar-check"><svg viewBox="0 0 12 10" fill="none" stroke="#fff" stroke-width="2.5"><polyline points="1,5 4.5,8.5 11,1"/></svg></div>
+        </div>
+        <div class="avatar-item" data-src="../img/1_spade.png">
+            <div class="avatar-img-wrap"><img src="../img/1_spade.png" alt="Avatar 3"></div>
+            <div class="avatar-check"><svg viewBox="0 0 12 10" fill="none" stroke="#fff" stroke-width="2.5"><polyline points="1,5 4.5,8.5 11,1"/></svg></div>
+        </div>
+        <div class="avatar-item" data-src="">
+            <div class="avatar-img-wrap"><img src="../img/10_herz.png" alt="Avatar 4"></div>
+            <div class="avatar-check"><svg viewBox="0 0 12 10" fill="none" stroke="#fff" stroke-width="2.5"><polyline points="1,5 4.5,8.5 11,1"/></svg></div>
+        </div>
+        <div class="avatar-item" data-src="">
+            <div class="avatar-img-wrap"><img src="../img/10_blatt.png" alt="Avatar 5"></div>
+            <div class="avatar-check"><svg viewBox="0 0 12 10" fill="none" stroke="#fff" stroke-width="2.5"><polyline points="1,5 4.5,8.5 11,1"/></svg></div>
+        </div>
+        <div class="avatar-item" data-src="">
+            <div class="avatar-img-wrap"><img src="../img/10_spade.png" alt="Avatar 6"></div>
+            <div class="avatar-check"><svg viewBox="0 0 12 10" fill="none" stroke="#fff" stroke-width="2.5"><polyline points="1,5 4.5,8.5 11,1"/></svg></div>
+        </div>
+        <div class="avatar-item" data-src="">
+            <div class="avatar-img-wrap"><img src="../img/koenig_herz.png" alt="Avatar 7"></div>
+            <div class="avatar-check"><svg viewBox="0 0 12 10" fill="none" stroke="#fff" stroke-width="2.5"><polyline points="1,5 4.5,8.5 11,1"/></svg></div>
+        </div>
+        <div class="avatar-item" data-src="../img/koenig_blatt.png">
+            <div class="avatar-img-wrap"><img src="../img/koenig_herz.png" alt="Avatar 8"></div>
+            <div class="avatar-check"><svg viewBox="0 0 12 10" fill="none" stroke="#fff" stroke-width="2.5"><polyline points="1,5 4.5,8.5 11,1"/></svg></div>
+        </div>
+        <div class="avatar-item" data-src="../img/koenig_spade.png">
+            <div class="avatar-img-wrap"><img src="../img/koenig_herz.png" alt="Avatar 9"></div>
+            <div class="avatar-check"><svg viewBox="0 0 12 10" fill="none" stroke="#fff" stroke-width="2.5"><polyline points="1,5 4.5,8.5 11,1"/></svg></div>
+        </div>
+    </div>
 
-                <button type="submit">Profil erstellen</button>
-            </form>
+    <label for="personality">Bulletpoint über Persönlichkeit</label>
+    <input type="text" id="personality" name="personality" placeholder="z.B. Spontan & reiselustig" required>
+
+    <label for="hobby">Lieblingshobby</label>
+    <input type="text" id="hobby" name="hobby" placeholder="z.B. Surfing" required>
+
+    <button type="submit" id="submitBtn" disabled>Profil erstellen</button>
+    <p style="text-align:center; font-size:0.85rem; color:#999; margin-top:0.5rem;">Bitte wähle zuerst ein Profilbild</p>
+</form>
         </div>
     </div>
     <a href="../index.html"><img class="mascot" src="../img/maskotchen.png" alt="Maskottchen"></a>
     <script>
-    function previewImage(event) {
-        const reader = new FileReader();
-        reader.onload = function(){
-            const output = document.getElementById('preview');
-            output.src = reader.result;
-        };
-        reader.readAsDataURL(event.target.files[0]);
-    }
-    </script>
+document.querySelectorAll('.avatar-item').forEach(function(item) {
+    item.addEventListener('click', function() {
+        // Alle abwählen
+        document.querySelectorAll('.avatar-item').forEach(function(el) {
+            el.classList.remove('selected');
+        });
+        // Dieses auswählen
+        item.classList.add('selected');
+        // Pfad ins hidden field schreiben
+        document.getElementById('selected_avatar').value = item.dataset.src;
+        // Submit-Button freischalten
+        document.getElementById('submitBtn').disabled = false;
+    });
+});
+</script>
 </body>
 </html>
