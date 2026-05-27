@@ -129,11 +129,11 @@ $conn->close();
             <div class="avatar-check"><svg viewBox="0 0 12 10" fill="none" stroke="#fff" stroke-width="2.5"><polyline points="1,5 4.5,8.5 11,1"/></svg></div>
         </div>
         <div class="avatar-item" data-src="../img/koenig_blatt.png">
-            <div class="avatar-img-wrap"><img src="../img/koenig_herz.png" alt="Avatar 8"></div>
+            <div class="avatar-img-wrap"><img src="../img/koenig_blatt.png" alt="Avatar 8"></div>
             <div class="avatar-check"><svg viewBox="0 0 12 10" fill="none" stroke="#fff" stroke-width="2.5"><polyline points="1,5 4.5,8.5 11,1"/></svg></div>
         </div>
         <div class="avatar-item" data-src="../img/koenig_spade.png">
-            <div class="avatar-img-wrap"><img src="../img/koenig_herz.png" alt="Avatar 9"></div>
+            <div class="avatar-img-wrap"><img src="../img/koenig_spade.png" alt="Avatar 9"></div>
             <div class="avatar-check"><svg viewBox="0 0 12 10" fill="none" stroke="#fff" stroke-width="2.5"><polyline points="1,5 4.5,8.5 11,1"/></svg></div>
         </div>
     </div>
