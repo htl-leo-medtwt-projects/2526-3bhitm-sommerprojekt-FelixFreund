@@ -57,6 +57,7 @@ body {
     justify-content: center;
     gap: 1rem;
     margin-bottom: 2rem;
+    margin-left: -11rem;
 }
 
 .card-symbol {
@@ -382,10 +383,10 @@ a {
     }
 .mascot {
     position: absolute;
-    width: 5rem;
+    max-width: 210px;
     height: auto;
     right: 0.3%;
-    top: 269%;
+    top: 482.5%;
     margin: 0;
     padding: 0;
   

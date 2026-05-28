@@ -119,11 +119,11 @@ body {
 
 /* Maskottchen unten rechts */
 .mascot {
-	position: fixed;
-	right: 2vw;
-	bottom: 2vw;
-	width: 90px;
-	max-width: 18vw;
+	 position: absolute;
+   right: 0.1%;
+    bottom: 1%;
+    width: 5rem;
+    max-width: 210px;
 	z-index: 10;
 }
 
