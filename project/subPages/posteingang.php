@@ -35,9 +35,19 @@ $query = $conn->prepare("SELECT dr.id, dr.activity, dr.date, dr.time, dr.locatio
 $query->bind_param('i', $user_id);
 $query->execute();
 $requests_result = $query->get_result();
-$requests = [];
+$incoming = [];
 while ($row = $requests_result->fetch_assoc()) {
-    $requests[] = $row;
+    $incoming[] = $row;
+}
+$query->close();
+
+$query = $conn->prepare("SELECT dr.id, dr.activity, dr.date, dr.time, dr.location, dr.status, u.id AS receiver_id, prof.personality, prof.image_path, up.age, up.gender, prof.hobby FROM date_requests dr JOIN users u ON dr.receiver_id = u.id LEFT JOIN profiles prof ON u.id = prof.id LEFT JOIN user_preferences up ON u.id = up.id WHERE dr.requester_id = ? ORDER BY dr.created_at DESC");
+$query->bind_param('i', $user_id);
+$query->execute();
+$outgoing_result = $query->get_result();
+$outgoing = [];
+while ($row = $outgoing_result->fetch_assoc()) {
+    $outgoing[] = $row;
 }
 $query->close();
 $conn->close();
@@ -64,32 +74,74 @@ $conn->close();
         </nav>
 
         <main class="page-shell">
-            <div class="inbox-card">
-                <h1>Posteingang</h1>
-                <?php if (count($requests) === 0): ?>
-                    <p>Keine neuen Anfragen vorhanden.</p>
-                <?php else: ?>
-                    <?php foreach ($requests as $request): ?>
-                        <div class="request-card" id="request-<?php echo $request['id']; ?>">
-                            <div class="request-header">
-                                <img src="<?php echo htmlspecialchars($request['image_path'] ?? '../img/profile_placeholder.png'); ?>" alt="Anfragender" class="request-avatar">
-                                <div>
-                                    <h2><?php echo htmlspecialchars($request['personality'] ?? 'Unbekannt'); ?></h2>
-                                    <p><?php echo htmlspecialchars($request['age'] ?? ''); ?> Jahre · <?php echo htmlspecialchars($request['gender'] ?? ''); ?></p>
+            <div class="inbox-layout">
+                <div class="page-title">
+                    <p class="section-subtitle">Posteingang</p>
+                    <h1>Neue Anfragen</h1>
+                </div>
+                <div class="inbox-content">
+                    <section class="inbox-section inbox-incoming">
+                        <?php if (count($incoming) === 0): ?>
+                            <div class="empty-state">Du hast aktuell keine neuen Anfragen.</div>
+                        <?php else: ?>
+                            <?php foreach ($incoming as $request): ?>
+                                <div class="request-card" id="request-<?php echo $request['id']; ?>">
+                                    <div class="request-card-header">
+                                        <div class="request-profile">
+                                            <img src="<?php echo htmlspecialchars($request['image_path'] ?? '../img/profile_placeholder.png'); ?>" alt="Anfragender" class="request-avatar">
+                                            <div>
+                                                <h3><?php echo htmlspecialchars($request['personality'] ?? 'Unbekannt'); ?></h3>
+                                                <p><?php echo htmlspecialchars($request['activity']); ?></p>
+                                            </div>
+                                        </div>
+                                        <span class="request-subtitle">möchte sich treffen</span>
+                                    </div>
+                                    <div class="request-info">
+                                        <p><span class="info-label"><?php echo htmlspecialchars($request['activity']); ?></span></p>
+                                        <p><span class="info-label"><?php echo htmlspecialchars(date('d.m.Y', strtotime($request['date']))); ?> um <?php echo htmlspecialchars(substr($request['time'],0,5)); ?></span></p>
+                                        <p><span class="info-label"><?php echo htmlspecialchars($request['location']); ?></span></p>
+                                    </div>
+                                    <div class="request-actions">
+                                        <button class="accept-btn" onclick="respondToRequest(<?php echo $request['id']; ?>, 'accept')">Annehmen</button>
+                                        <button class="reject-btn" onclick="respondToRequest(<?php echo $request['id']; ?>, 'reject')">Ablehnen</button>
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="request-details">
-                                <p><strong>Art des Treffens:</strong> <?php echo htmlspecialchars($request['activity']); ?></p>
-                                <p><strong>Datum:</strong> <?php echo htmlspecialchars($request['date']); ?> um <?php echo htmlspecialchars(substr($request['time'],0,5)); ?></p>
-                                <p><strong>Ort:</strong> <?php echo htmlspecialchars($request['location']); ?></p>
-                            </div>
-                            <div class="request-actions">
-                                <button class="accept-btn" onclick="respondToRequest(<?php echo $request['id']; ?>, 'accept')">Annehmen</button>
-                                <button class="reject-btn" onclick="respondToRequest(<?php echo $request['id']; ?>, 'reject')">Ablehnen</button>
-                            </div>
+                            <?php endforeach; ?>
+                        <?php endif; ?>
+                    </section>
+                    <section class="inbox-section inbox-outgoing">
+                        <div class="section-header">
+                            <h2>Gesendete Anfragen</h2>
+                            <p>Behalte alle angefragten Dates im Blick.</p>
                         </div>
-                    <?php endforeach; ?>
-                <?php endif; ?>
+                        <?php if (count($outgoing) === 0): ?>
+                            <div class="empty-state">Du hast noch keine Date-Anfragen verschickt.</div>
+                        <?php else: ?>
+                            <?php foreach ($outgoing as $request): ?>
+                                <?php
+                                    $statusClass = $request['status'] === 'accepted' ? 'status-accepted' : ($request['status'] === 'rejected' ? 'status-rejected' : 'status-pending');
+                                    $statusLabel = $request['status'] === 'accepted' ? 'Angenommen' : ($request['status'] === 'rejected' ? 'Abgelehnt' : 'Ausstehend');
+                                ?>
+                                <div class="sent-card">
+                                    <div class="request-card-header">
+                                        <div class="request-profile">
+                                            <img src="<?php echo htmlspecialchars($request['image_path'] ?? '../img/profile_placeholder.png'); ?>" alt="Empfänger" class="request-avatar">
+                                            <div>
+                                                <h3><?php echo htmlspecialchars($request['personality'] ?? 'Unbekannt'); ?></h3>
+                                                <p><?php echo htmlspecialchars($request['activity']); ?></p>
+                                            </div>
+                                        </div>
+                                        <span class="status-badge <?php echo $statusClass; ?>"><?php echo $statusLabel; ?></span>
+                                    </div>
+                                    <div class="request-info">
+                                        <p><span class="info-label"><?php echo htmlspecialchars($request['date']); ?> um <?php echo htmlspecialchars(substr($request['time'],0,5)); ?></span></p>
+                                        <p><span class="info-label"><?php echo htmlspecialchars($request['location']); ?></span></p>
+                                    </div>
+                                </div>
+                            <?php endforeach; ?>
+                        <?php endif; ?>
+                    </section>
+                </div>
             </div>
         </main>
     </div>

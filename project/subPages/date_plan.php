@@ -127,40 +127,76 @@ $conn->close();
         </nav>
 
         <main class="page-shell">
-            <div class="date-plan-card">
-                <h1>Date planen</h1>
-                <div class="request-profile">
-                    <img src="<?php echo htmlspecialchars($partner['image_path'] ?? '../img/profile_placeholder.png'); ?>" alt="Partner" class="request-avatar">
-                    <div>
-                        <h2><?php echo htmlspecialchars($partner['personality'] ?? 'Unbekannt'); ?></h2>
-                        <p><?php echo htmlspecialchars($partner['age'] ?? ''); ?> Jahre · <?php echo htmlspecialchars($partner['gender'] ?? ''); ?></p>
-                        <p><?php echo htmlspecialchars($partner['hobby'] ?? ''); ?></p>
+            <div class="date-plan-layout">
+                <div class="date-plan-card">
+                    <div class="date-plan-header">
+                        <a href="home.php" class="back-link">← Date planen</a>
                     </div>
+                    <div class="profile-card">
+                        <img src="<?php echo htmlspecialchars($partner['image_path'] ?? '../img/profile_placeholder.png'); ?>" alt="Partner" class="profile-avatar">
+                        <div class="profile-details">
+                            <h2><?php echo htmlspecialchars($partner['personality'] ?? 'Unbekannt'); ?></h2>
+                            <p><?php echo htmlspecialchars($partner['age'] ?? ''); ?> Jahre · <?php echo htmlspecialchars($partner['gender'] ?? ''); ?></p>
+                        </div>
+                    </div>
+                    <?php if ($error): ?>
+                        <div class="form-error"><?php echo htmlspecialchars($error); ?></div>
+                    <?php elseif ($success): ?>
+                        <div class="form-success">Deine Date-Anfrage wurde erfolgreich gesendet.</div>
+                    <?php endif; ?>
+                    <form method="post" action="date_plan.php?partner_id=<?php echo $partner_id; ?>" class="date-form">
+                        <input type="hidden" name="partner_id" value="<?php echo $partner_id; ?>">
+                        <input type="hidden" name="activity" id="activityInput" value="Kaffee">
+                        <div class="form-group">
+                            <label class="input-label">Art des Treffens</label>
+                            <div class="activity-options">
+                                <button type="button" class="activity-btn selected" data-value="Kaffee">
+                                    <span class="activity-icon">☕</span>
+                                    Kaffee
+                                </button>
+                                <button type="button" class="activity-btn" data-value="Spaziergang">
+                                    <span class="activity-icon">👟</span>
+                                    Spaziergang
+                                </button>
+                                <button type="button" class="activity-btn" data-value="Restaurant">
+                                    <span class="activity-icon">🍽️</span>
+                                    Restaurant
+                                </button>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="input-label">Datum</label>
+                            <input type="date" name="date" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="input-label">Uhrzeit</label>
+                            <input type="time" name="time" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="input-label">Ort</label>
+                            <input type="text" name="location" placeholder="z.B. Café Central, Hauptstraße 12" required>
+                        </div>
+                        <button type="submit" class="submit-btn">Date anfragen</button>
+                    </form>
                 </div>
-                <?php if ($error): ?>
-                    <div class="form-error"><?php echo htmlspecialchars($error); ?></div>
-                <?php elseif ($success): ?>
-                    <div class="form-success">Deine Date-Anfrage wurde erfolgreich gesendet.</div>
-                <?php endif; ?>
-                <form method="post" action="date_plan.php?partner_id=<?php echo $partner_id; ?>" class="date-form">
-                    <input type="hidden" name="partner_id" value="<?php echo $partner_id; ?>">
-                    <label>Art des Treffens</label>
-                    <select name="activity" required>
-                        <option value="">Bitte wählen</option>
-                        <option value="Kaffee">Kaffee</option>
-                        <option value="Spaziergang">Spaziergang</option>
-                        <option value="Restaurant">Restaurant</option>
-                    </select>
-                    <label>Datum</label>
-                    <input type="date" name="date" required>
-                    <label>Uhrzeit</label>
-                    <input type="time" name="time" required>
-                    <label>Ort</label>
-                    <input type="text" name="location" placeholder="z.B. Café Central, Hauptstraße 12" required>
-                    <button type="submit" class="submit-btn">Date anfragen</button>
-                </form>
             </div>
         </main>
     </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const activityButtons = document.querySelectorAll('.activity-btn');
+            const activityInput = document.getElementById('activityInput');
+            if (!activityButtons.length || !activityInput) {
+                return;
+            }
+            activityButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    activityButtons.forEach(btn => btn.classList.remove('selected'));
+                    button.classList.add('selected');
+                    activityInput.value = button.dataset.value;
+                });
+            });
+        });
+    </script>
 </body>
 </html>

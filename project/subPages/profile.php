@@ -138,8 +138,8 @@ $conn->close();
         </div>
     </div>
 
-    <label for="personality">Bulletpoint über Persönlichkeit</label>
-    <input type="text" id="personality" name="personality" placeholder="z.B. Spontan & reiselustig" required>
+    <label for="personality">Name</label>
+    <input type="text" id="personality" name="personality" placeholder="z.B. Max Mustermann" required>
 
     <label for="hobby">Lieblingshobby</label>
     <input type="text" id="hobby" name="hobby" placeholder="z.B. Surfing" required>
