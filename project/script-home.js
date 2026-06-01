@@ -75,6 +75,11 @@ function reactToPartner(reaction) {
     if (currentIndex >= cards.length) return;
 
     const partnerId = cards[currentIndex].getAttribute('data-id');
+
+    if (reaction === 'like') {
+        window.location.href = `date_plan.php?partner_id=${partnerId}`;
+        return;
+    }
     
     // Sende Reaction zum Server
     fetch('../api/reaction.php', {
@@ -93,18 +98,32 @@ function reactToPartner(reaction) {
             // Zeige Feedback an
             showFeedback(reaction);
             
-            // Gehe zum nächsten Partner
-            if (currentIndex < totalPartners - 1) {
-                setTimeout(() => {
-                    showNext();
-                }, 500);
-            } else {
-                // Keine mehr Partner
-                showNoMorePartners();
-            }
+            // Entferne die aktuelle Karte nach der Animation
+            setTimeout(() => {
+                removeCurrentCard();
+            }, 500);
         }
     })
     .catch(error => console.error('Error:', error));
+}
+
+function removeCurrentCard() {
+    const card = cards[currentIndex];
+    if (!card) return;
+
+    card.remove();
+    cards = Array.from(document.querySelectorAll('.dating-card'));
+    totalPartners = cards.length;
+
+    if (currentIndex >= totalPartners) {
+        currentIndex = totalPartners - 1;
+    }
+
+    if (totalPartners > 0) {
+        updateDisplay();
+    } else {
+        showNoMorePartners();
+    }
 }
 
 function showFeedback(reaction) {

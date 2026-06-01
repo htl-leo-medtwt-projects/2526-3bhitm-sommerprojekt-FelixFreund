@@ -45,6 +45,16 @@ if ($conn->connect_error) {
     exit;
 }
 
+$userReactionsSql = "CREATE TABLE IF NOT EXISTS user_reactions (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    user_id INT NOT NULL,
+    partner_id INT NOT NULL,
+    reaction ENUM('like','dislike') NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    UNIQUE KEY unique_reaction (user_id, partner_id)
+)";
+$conn->query($userReactionsSql);
+
 // Speichere Reaction in der Datenbank
 try {
     // Prüfe ob bereits eine Reaction existiert
@@ -64,6 +74,25 @@ try {
     }
 
     if ($stmt->execute()) {
+        if ($reaction === 'dislike') {
+            // Bei Nicht-Interesse soll der Partner auch für den anderen Benutzer verschwinden.
+            $reverseCheck = $conn->prepare("SELECT id FROM user_reactions WHERE user_id = ? AND partner_id = ?");
+            $reverseCheck->bind_param("ii", $partner_id, $user_id);
+            $reverseCheck->execute();
+            $reverseCheck->store_result();
+
+            if ($reverseCheck->num_rows > 0) {
+                $reverseStmt = $conn->prepare("UPDATE user_reactions SET reaction = 'dislike' WHERE user_id = ? AND partner_id = ?");
+                $reverseStmt->bind_param("ii", $partner_id, $user_id);
+            } else {
+                $reverseStmt = $conn->prepare("INSERT INTO user_reactions (user_id, partner_id, reaction) VALUES (?, ?, 'dislike')");
+                $reverseStmt->bind_param("ii", $partner_id, $user_id);
+            }
+            $reverseStmt->execute();
+            $reverseStmt->close();
+            $reverseCheck->close();
+        }
+
         echo json_encode(['success' => true]);
     } else {
         echo json_encode(['success' => false, 'error' => 'Failed to save reaction']);
