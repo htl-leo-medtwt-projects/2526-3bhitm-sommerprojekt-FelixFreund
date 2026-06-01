@@ -21,16 +21,34 @@ if ($conn->connect_error) {
 }
 
 $message = "";
-$profile_image_path = "../img/profile_placeholder.png";
 $user_id = $_SESSION['user_id'];
 
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
-   // Kein Upload mehr — festes Avatar-Bild aus dem Grid
+$personality = "";
+$hobby = "";
+$existing_profile_image_path = "";
 $profile_image_path = "../img/profile_placeholder.png";
 
-if (!empty($_POST['profile_image_path'])) {
-    $profile_image_path = htmlspecialchars($_POST['profile_image_path']);
+// Lade vorhandenes Profil, damit Bild und Felder beim Bearbeiten erhalten bleiben
+$profileCheck = $conn->prepare("SELECT personality, hobby, image_path FROM profiles WHERE id = ?");
+$profileCheck->bind_param("i", $user_id);
+$profileCheck->execute();
+$profileResult = $profileCheck->get_result();
+if ($profileRow = $profileResult->fetch_assoc()) {
+    $personality = $profileRow['personality'];
+    $hobby = $profileRow['hobby'];
+    $existing_profile_image_path = $profileRow['image_path'];
+    if (!empty($existing_profile_image_path)) {
+        $profile_image_path = $existing_profile_image_path;
+    }
 }
+$profileCheck->close();
+
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    if (!empty($_POST['profile_image_path'])) {
+        $profile_image_path = htmlspecialchars($_POST['profile_image_path']);
+    } elseif (!empty($existing_profile_image_path)) {
+        $profile_image_path = $existing_profile_image_path;
+    }
 
     $personality = trim($_POST["personality"]);
     $hobby = trim($_POST["hobby"]);
@@ -89,11 +107,11 @@ $conn->close();
 
     <label>Profilbild wählen</label>
     <!-- Verstecktes Feld speichert den gewählten Pfad -->
-    <input type="hidden" id="selected_avatar" name="profile_image_path" value="">
+    <input type="hidden" id="selected_avatar" name="profile_image_path" value="<?php echo htmlspecialchars($profile_image_path); ?>">
 
     <!-- 3x3 Avatar-Grid -->
     <div class="avatar-grid" id="avatarGrid">
-        <div class="avatar-item" data-src="../img/avatars/avatar1.png">
+        <div class="avatar-item" data-src="../img/1_herz.png">
             <div class="avatar-img-wrap">
                 <img src="../img/1_herz.png" alt="Avatar 1">
             </div>
@@ -112,19 +130,19 @@ $conn->close();
             <div class="avatar-img-wrap"><img src="../img/1_spade.png" alt="Avatar 3"></div>
             <div class="avatar-check"><svg viewBox="0 0 12 10" fill="none" stroke="#fff" stroke-width="2.5"><polyline points="1,5 4.5,8.5 11,1"/></svg></div>
         </div>
-        <div class="avatar-item" data-src="">
+        <div class="avatar-item" data-src="../img/10_herz.png">
             <div class="avatar-img-wrap"><img src="../img/10_herz.png" alt="Avatar 4"></div>
             <div class="avatar-check"><svg viewBox="0 0 12 10" fill="none" stroke="#fff" stroke-width="2.5"><polyline points="1,5 4.5,8.5 11,1"/></svg></div>
         </div>
-        <div class="avatar-item" data-src="">
+        <div class="avatar-item" data-src="../img/10_blatt.png">
             <div class="avatar-img-wrap"><img src="../img/10_blatt.png" alt="Avatar 5"></div>
             <div class="avatar-check"><svg viewBox="0 0 12 10" fill="none" stroke="#fff" stroke-width="2.5"><polyline points="1,5 4.5,8.5 11,1"/></svg></div>
         </div>
-        <div class="avatar-item" data-src="">
+        <div class="avatar-item" data-src="../img/10_spade.png">
             <div class="avatar-img-wrap"><img src="../img/10_spade.png" alt="Avatar 6"></div>
             <div class="avatar-check"><svg viewBox="0 0 12 10" fill="none" stroke="#fff" stroke-width="2.5"><polyline points="1,5 4.5,8.5 11,1"/></svg></div>
         </div>
-        <div class="avatar-item" data-src="">
+        <div class="avatar-item" data-src="../img/koenig_herz.png">
             <div class="avatar-img-wrap"><img src="../img/koenig_herz.png" alt="Avatar 7"></div>
             <div class="avatar-check"><svg viewBox="0 0 12 10" fill="none" stroke="#fff" stroke-width="2.5"><polyline points="1,5 4.5,8.5 11,1"/></svg></div>
         </div>
@@ -139,32 +157,41 @@ $conn->close();
     </div>
 
     <label for="personality">Name</label>
-    <input type="text" id="personality" name="personality" placeholder="z.B. Max Mustermann" required>
+    <input type="text" id="personality" name="personality" placeholder="z.B. Max Mustermann" required value="<?php echo htmlspecialchars($personality); ?>">
 
     <label for="hobby">Lieblingshobby</label>
-    <input type="text" id="hobby" name="hobby" placeholder="z.B. Surfing" required>
+    <input type="text" id="hobby" name="hobby" placeholder="z.B. Surfing" required value="<?php echo htmlspecialchars($hobby); ?>">
 
-    <button type="submit" id="submitBtn" disabled>Profil erstellen</button>
+    <button type="submit" id="submitBtn" <?php echo empty($profile_image_path) || $profile_image_path === '../img/profile_placeholder.png' ? 'disabled' : ''; ?>>Profil erstellen</button>
     <p style="text-align:center; font-size:0.85rem; color:#999; margin-top:0.5rem;">Bitte wähle zuerst ein Profilbild</p>
 </form>
         </div>
     </div>
     <a href="../index.html"><img class="mascot" src="../img/maskotchen.png" alt="Maskottchen"></a>
     <script>
+const selectedAvatarInput = document.getElementById('selected_avatar');
+const submitBtn = document.getElementById('submitBtn');
+
+function updateSelection() {
+    const selectedValue = selectedAvatarInput.value;
+    document.querySelectorAll('.avatar-item').forEach(function(item) {
+        item.classList.toggle('selected', item.dataset.src === selectedValue);
+    });
+    submitBtn.disabled = !selectedValue || selectedValue === '../img/profile_placeholder.png';
+}
+
 document.querySelectorAll('.avatar-item').forEach(function(item) {
     item.addEventListener('click', function() {
-        // Alle abwählen
         document.querySelectorAll('.avatar-item').forEach(function(el) {
             el.classList.remove('selected');
         });
-        // Dieses auswählen
         item.classList.add('selected');
-        // Pfad ins hidden field schreiben
-        document.getElementById('selected_avatar').value = item.dataset.src;
-        // Submit-Button freischalten
-        document.getElementById('submitBtn').disabled = false;
+        selectedAvatarInput.value = item.dataset.src;
+        submitBtn.disabled = false;
     });
 });
+
+updateSelection();
 </script>
 </body>
 </html>

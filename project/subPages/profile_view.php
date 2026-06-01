@@ -106,7 +106,7 @@ $hobbies = formatLabel(htmlspecialchars($current_user['hobbies']));
 
             <div class="profile-details">
                 <div class="profile-item">
-                    <span class="profile-label">Persönlichkeit</span>
+                    <span class="profile-label">Name</span>
                     <span class="profile-value"><?php echo $personality; ?></span>
                 </div>
                 <div class="profile-item">
