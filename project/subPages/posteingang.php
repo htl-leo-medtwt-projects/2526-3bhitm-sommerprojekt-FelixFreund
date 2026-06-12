@@ -91,7 +91,7 @@ $conn->close();
                                             <img src="<?php echo htmlspecialchars($request['image_path'] ?? '../img/profile_placeholder.png'); ?>" alt="Anfragender" class="request-avatar">
                                             <div>
                                                 <h3><?php echo htmlspecialchars($request['personality'] ?? 'Unbekannt'); ?></h3>
-                                                <p><?php echo htmlspecialchars($request['activity']); ?></p>
+                                                <p><?php echo htmlspecialchars($request['hobby']); ?></p>
                                             </div>
                                         </div>
                                         <span class="request-subtitle">möchte sich treffen</span>

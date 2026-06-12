@@ -252,6 +252,7 @@ body {
     grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
     gap: 2rem;
     margin-top: 2rem;
+
 }
 
 .feature-card {
@@ -395,4 +396,5 @@ a {
     width: 17%;
     height: auto;
     margin-bottom: 1rem;
+    margin-left: 7.5rem;
 }

@@ -30,8 +30,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $preferences = trim($_POST["preferences"]);
     $favorite_food = trim($_POST["favorite_food"]);
     $hobbies = trim($_POST["hobbies"]);
+    $sexual_orientation = trim($_POST["sexual_orientation"]);
 
-    if (empty($age) || empty($gender) || empty($interests) || empty($preferences) || empty($favorite_food) || empty($hobbies)) {
+    if (empty($age) || empty($gender) || empty($interests) || empty($preferences) || empty($favorite_food) || empty($hobbies) || empty($sexual_orientation)) {
         $message = "Bitte alle Felder ausfüllen.";
     } else {
         // Prüfe ob bereits Preferences existieren
@@ -42,16 +43,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         if ($check->num_rows > 0) {
             // Update existierende Preferences
-            $stmt = $conn->prepare("UPDATE user_preferences SET age=?, gender=?, interests=?, preferences=?, favorite_food=?, hobbies=? WHERE id=?");
-            $stmt->bind_param("ssssssi", $age, $gender, $interests, $preferences, $favorite_food, $hobbies, $user_id);
+            $stmt = $conn->prepare("UPDATE user_preferences SET age=?, gender=?, interests=?, preferences=?, favorite_food=?, hobbies=?, sexual_orientation=? WHERE id=?");
+            $stmt->bind_param("sssssssi", $age, $gender, $interests, $preferences, $favorite_food, $hobbies, $sexual_orientation, $user_id);
         } else {
             // Neue Preferences
-            $stmt = $conn->prepare("INSERT INTO user_preferences (id, age, gender, interests, preferences, favorite_food, hobbies) VALUES (?, ?, ?, ?, ?, ?, ?)");
-            $stmt->bind_param("issssss", $user_id, $age, $gender, $interests, $preferences, $favorite_food, $hobbies);
+            $stmt = $conn->prepare("INSERT INTO user_preferences (id, age, gender, interests, preferences, favorite_food, hobbies, sexual_orientation) VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
+            $stmt->bind_param("isssssss", $user_id, $age, $gender, $interests, $preferences, $favorite_food, $hobbies, $sexual_orientation);
         }
         
         if ($stmt->execute()) {
-            // Daten erfolgreich gespeichert, Weiterleitung zu Schritt 2 (profile.php)
             header('Location: profile.php');
             exit;
         } else {
@@ -170,6 +170,17 @@ $conn->close();
                     <option value="garten">Gartenarbeit</option>
                     <option value="kochen">Kochen</option>
                     <option value="reisen">Reisen</option>
+                </select>
+
+                <label for="sexual_orientation">Sexuelle Orientierung</label>
+                <select id="sexual_orientation" name="sexual_orientation" required>
+                    <option value="">Wähle deine Orientierung</option>
+                    <option value="heterosexuell" <?php echo isset($_POST['sexual_orientation']) && $_POST['sexual_orientation'] === 'heterosexuell' ? 'selected' : ''; ?>>Heterosexuell</option>
+                    <option value="homosexuell" <?php echo isset($_POST['sexual_orientation']) && $_POST['sexual_orientation'] === 'homosexuell' ? 'selected' : ''; ?>>Homosexuell</option>
+                    <option value="bisexuell" <?php echo isset($_POST['sexual_orientation']) && $_POST['sexual_orientation'] === 'bisexuell' ? 'selected' : ''; ?>>Bisexuell</option>
+                    <option value="pansexuell" <?php echo isset($_POST['sexual_orientation']) && $_POST['sexual_orientation'] === 'pansexuell' ? 'selected' : ''; ?>>Pansexuell</option>
+                    <option value="asexuell" <?php echo isset($_POST['sexual_orientation']) && $_POST['sexual_orientation'] === 'asexuell' ? 'selected' : ''; ?>>Asexuell</option>
+                    <option value="keine_angabe" <?php echo isset($_POST['sexual_orientation']) && $_POST['sexual_orientation'] === 'keine_angabe' ? 'selected' : ''; ?>>Keine Angabe</option>
                 </select>
 
                 <button type="submit">Weiter &rarr;</button>

@@ -256,7 +256,7 @@ button[type="submit"] {
     font-weight: 700;
     cursor: pointer;
     box-shadow: 0 10px 24px rgba(139, 30, 63, 0.16);
-    transition: transform 0.2s ease, background 0.2s ease, box-shadow 0.2s ease;
+    transition: transform 0.2s ease, all 0.2s ease, box-shadow 0.2s ease;
 }
 
 button[type="submit"]:hover,

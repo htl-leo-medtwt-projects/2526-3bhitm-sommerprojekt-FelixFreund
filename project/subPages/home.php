@@ -23,7 +23,7 @@ if ($conn->connect_error) {
 $user_id = $_SESSION['user_id'];
 
 // Hole die Preferences des aktuellen Benutzers
-$user_prefs = $conn->prepare("SELECT age, gender, interests, preferences, favorite_food, hobbies FROM user_preferences WHERE id = ?");
+$user_prefs = $conn->prepare("SELECT age, gender, interests, preferences, favorite_food, hobbies, sexual_orientation FROM user_preferences WHERE id = ?");
 $user_prefs->bind_param("i", $user_id);
 $user_prefs->execute();
 $user_prefs_result = $user_prefs->get_result();
@@ -31,7 +31,6 @@ $current_user = $user_prefs_result->fetch_assoc();
 $user_prefs->close();
 
 if (!$current_user) {
-    // Benutzer hat noch keine Preferences ausgefüllt
     header('Location: preferences.php');
     exit;
 }
@@ -46,7 +45,7 @@ $stmt->close();
 
 // Hole alle anderen Benutzer mit deren Preferences und Profilen
 $all_users = $conn->prepare("
-    SELECT u.id, up.age, up.gender, up.interests, up.preferences, up.favorite_food, up.hobbies, 
+    SELECT u.id, up.age, up.gender, up.interests, up.preferences, up.favorite_food, up.hobbies, up.sexual_orientation,
            prof.personality, prof.hobby, prof.image_path
     FROM users u
     LEFT JOIN user_preferences up ON u.id = up.id
@@ -62,28 +61,65 @@ while ($row = $all_users_result->fetch_assoc()) {
 }
 $all_users->close();
 
+// Prüft ob zwei Personen aufgrund ihrer Orientierung und Geschlechter kompatibel sind
+function isOrientationCompatible($current, $other) {
+    $myOrientation    = $current['sexual_orientation'] ?? 'keine_angabe';
+    $otherOrientation = $other['sexual_orientation']   ?? 'keine_angabe';
+    $myGender         = $current['gender'] ?? '';
+    $otherGender      = $other['gender']   ?? '';
+
+    // Pansexuell, asexuell und keine_angabe passen immer
+    $openOrientations = ['pansexuell', 'keine_angabe', 'asexuell'];
+    if (in_array($myOrientation, $openOrientations) || in_array($otherOrientation, $openOrientations)) {
+        return true;
+    }
+
+    // Bisexuell passt zu allen
+    if ($myOrientation === 'bisexuell' || $otherOrientation === 'bisexuell') {
+        return true;
+    }
+
+    // Heterosexuell: muss unterschiedliches Geschlecht haben
+    if ($myOrientation === 'heterosexuell' && $otherOrientation === 'heterosexuell') {
+        return $myGender !== $otherGender;
+    }
+
+    // Homosexuell: muss gleiches Geschlecht haben
+    if ($myOrientation === 'homosexuell' && $otherOrientation === 'homosexuell') {
+        return $myGender === $otherGender;
+    }
+
+    // Hetero trifft auf Homo → nicht kompatibel
+    if (
+        ($myOrientation === 'heterosexuell' && $otherOrientation === 'homosexuell') ||
+        ($myOrientation === 'homosexuell'   && $otherOrientation === 'heterosexuell')
+    ) {
+        return false;
+    }
+
+    return true;
+}
+
 // Berechne Kompatibilität für jeden Benutzer
 function calculateCompatibility($current, $other) {
     $score = 0;
     $max_score = 0;
 
-    // Felder die verglichen werden
     $fields = ['age', 'gender', 'interests', 'preferences', 'favorite_food', 'hobbies'];
     
     foreach ($fields as $field) {
-        $max_score += 100; // Maximale Punkte pro Feld
+        $max_score += 100;
         
         if (!empty($other[$field]) && !empty($current[$field])) {
             if ($other[$field] === $current[$field]) {
-                $score += 100; // Vollständige Übereinstimmung
+                $score += 100;
             } elseif ($field === 'age') {
-                // Bei Alter: Ähnliche Altersgruppen bekommen auch Punkte
-                $score += 30; // Teilpunkte für verschiedene Altersgruppen
+                $score += 30;
             } else {
-                $score += 10; // Minimale Punkte für vorhandene Daten
+                $score += 10;
             }
         } elseif (!empty($other[$field])) {
-            $score += 5; // Kleine Bonus wenn der andere hat, wir aber nicht
+            $score += 5;
         }
     }
     
@@ -93,7 +129,11 @@ function calculateCompatibility($current, $other) {
 // Berechne Kompatibilität für alle Benutzer
 $partners = [];
 foreach ($users_list as $user) {
-    if (!empty($user['age'])) { // Nur Benutzer mit vollständigen Preferences
+    if (!empty($user['age'])) {
+        // Orientierung prüfen – unpassende Kombinationen direkt ausschließen
+        if (!isOrientationCompatible($current_user, $user)) {
+            continue;
+        }
         $compatibility = calculateCompatibility($current_user, $user);
         $partners[] = [
             'id' => $user['id'],
@@ -103,6 +143,7 @@ foreach ($users_list as $user) {
             'preferences' => $user['preferences'],
             'favorite_food' => $user['favorite_food'],
             'hobbies' => $user['hobbies'],
+            'sexual_orientation' => $user['sexual_orientation'],
             'personality' => $user['personality'],
             'hobby' => $user['hobby'],
             'profile_image' => $user['image_path'] ?? '../img/profile_placeholder.png',
@@ -207,7 +248,5 @@ $conn->close();
             </div>
         </main>
     </div>
-
-    
 </body>
 </html>
