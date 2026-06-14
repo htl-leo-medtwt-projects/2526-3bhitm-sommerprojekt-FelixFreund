@@ -1,140 +1,174 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@500;700&display=swap');
 
 :root {
-	--primary-color: #8B1E3F;
-	--secondary-color: #FCFCFC;
-	--text-color: #52555c;
-	--background: #f6f1f4;
-	--font-family: 'Inter', 'Instrument Serif', 'Jeju Gothic', sans-serif;
-	--shadow: 0 4px 20px rgba(139, 30, 63, 0.10);
+    --primary:       #8B1E3F;
+    --primary-light: #c73560;
+    --primary-glow:  rgba(139,30,63,.12);
+    --primary-faint: rgba(139,30,63,.06);
+    --surface:       #ffffff;
+    --surface-tint:  #fdf5f8;
+    --bg:            #f6f0f3;
+    --text:          #2d2633;
+    --text-muted:    #7a6e74;
+    --border:        rgba(139,30,63,.13);
+    --r-sm:  10px;
+    --r-md:  16px;
+    --r-lg:  24px;
+    --r-xl:  32px;
+    --sh-lg: 0 20px 60px rgba(139,30,63,.13);
+    --t: .2s ease;
+    --font-display: 'Playfair Display', serif;
+    --font-body:    'Inter', sans-serif;
+    --sp-xs: .5rem;
+    --sp-sm: .75rem;
+    --sp-md: 1.25rem;
+    --sp-lg: 2rem;
+    --sp-xl: 3rem;
 }
 
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
 html, body {
-	margin: 0;
-	min-height: 100%;
-	font-family: var(--font-family);
-	background: var(--background);
-	color: var(--text-color);
+    min-height: 100%;
+    font-family: var(--font-body);
+    background: var(--bg);
+    color: var(--text);
+    -webkit-font-smoothing: antialiased;
 }
 
 body {
-	display: flex;
-	flex-direction: column;
-	min-height: 100vh;
-	justify-content: center;
-	align-items: center;
-	position: relative;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: var(--sp-lg);
+}
+
+#login_header {
+    text-align: center;
+    margin-bottom: var(--sp-md);
+}
+#login_header img {
+    width: 56px;
+    height: auto;
+    display: block;
+    margin: 0 auto var(--sp-xs);
+}
+#banner {
+    font-family: var(--font-display);
+    font-size: 1.9rem;
+    color: var(--primary);
+    font-weight: 700;
 }
 
 .register-card {
-	background: #fff;
-	border-radius: 18px;
-	box-shadow: var(--shadow);
-	width: 30%;
-	margin-top: 4.5rem;
-    padding: 4%;
-	display: flex;
-	flex-direction: column;
-	align-items: stretch;
-	position: relative;
-    
+    background: var(--surface);
+    border-radius: var(--r-xl);
+    box-shadow: var(--sh-lg);
+    border: 1px solid var(--border);
+    width: min(100%, 420px);
+    padding: var(--sp-xl) var(--sp-lg);
+    display: flex;
+    flex-direction: column;
+    gap: var(--sp-xs);
 }
 
 .register-card h2 {
-	text-align: center;
-	color: var(--primary-color);
-	margin-bottom: 1.5rem;
-	font-size: 2rem;
-	font-weight: 700;
+    font-family: var(--font-display);
+    text-align: center;
+    color: var(--primary);
+    font-size: 2rem;
+    font-weight: 700;
+    margin-bottom: var(--sp-sm);
 }
 
 .register-card label {
-	font-size: 1rem;
-	color: var(--text-color);
-	margin-bottom: 0.25rem;
-	margin-top: 0.7rem;
-	font-weight: 500;
+    display: block;
+    font-size: .88rem;
+    font-weight: 600;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: .06em;
+    margin-top: var(--sp-sm);
+    margin-bottom: .3rem;
 }
 
 .register-card input[type="email"],
 .register-card input[type="password"],
 .register-card input[type="text"] {
-	width: 100%;
-	padding: 0.7rem 1rem;
-	border: 1.5px solid #e0d7de;
-	border-radius: 8px;
-	background: #faf7fa;
-	font-size: 1rem;
-	margin-bottom: 0.5rem;
-	transition: border 0.2s;
+    width: 100%;
+    padding: .85rem 1rem;
+    border: 1.5px solid var(--border);
+    border-radius: var(--r-md);
+    background: var(--surface-tint);
+    font-family: var(--font-body);
+    font-size: .97rem;
+    color: var(--text);
+    transition: border-color var(--t), box-shadow var(--t);
 }
 .register-card input:focus {
-	outline: none;
-	border-color: var(--primary-color);
-	background: #fff;
+    outline: none;
+    border-color: var(--primary);
+    box-shadow: 0 0 0 3px var(--primary-glow);
+    background: #fff;
 }
 
 .register-card button[type="submit"] {
-	background: var(--primary-color);
-	color: #fff;
-	border: none;
-	border-radius: 8px;
-	padding: 0.75rem;
-	font-size: 1.08rem;
-	font-weight: 700;
-	margin-top: 1.1rem;
-    position: relative;
-    left: 38%;
-	cursor: pointer;
-	box-shadow: 0 2px 8px rgba(139, 30, 63, 0.08);
-	transition: all 0.2s;
+    width: 100%;
+    margin-top: var(--sp-md);
+    padding: 1rem;
+    border: none;
+    border-radius: var(--r-md);
+    background: linear-gradient(135deg, var(--primary), var(--primary-light));
+    color: #fff;
+    font-family: var(--font-body);
+    font-size: 1rem;
+    font-weight: 700;
+    cursor: pointer;
+    box-shadow: 0 4px 16px rgba(139,30,63,.28);
+    transition: transform var(--t), box-shadow var(--t);
 }
 .register-card button[type="submit"]:hover {
-	background: #a8325a;
+    transform: translateY(-1px);
+    box-shadow: 0 8px 24px rgba(139,30,63,.35);
 }
 
-.register-card .register-message {
-	text-align: center;
-	margin-bottom: 1rem;
-	color: var(--primary-color);
-	font-size: 1rem;
+.register-message {
+    text-align: center;
+    color: var(--primary);
+    font-size: .95rem;
+    font-weight: 600;
+    margin-bottom: var(--sp-xs);
 }
 
-.register-card .login-link {
-	text-align: center;
-	margin-top: 1.2rem;
-	font-size: 0.98rem;
-	color: #888;
+.login-link {
+    text-align: center;
+    margin-top: var(--sp-md);
+    font-size: .93rem;
+    color: var(--text-muted);
 }
-.register-card .login-link a {
-	color: var(--primary-color);
-	font-weight: 600;
-	text-decoration: none;
-	margin-left: 0.2rem;
-	transition: color 0.2s;
+.login-link a {
+    color: var(--primary);
+    font-weight: 600;
+    margin-left: .2rem;
+    transition: opacity var(--t);
 }
-.register-card .login-link a:hover {
-	color: #a8325a;
-}
+.login-link a:hover { opacity: .75; }
 
-/* Maskottchen unten rechts */
 .mascot {
-	 position: absolute;
-   right: 0.1%;
-    bottom: 1%;
-    width: 5rem;
-    max-width: 210px;
-	z-index: 10;
+    position: fixed;
+    right: 1.25rem;
+    bottom: 1.25rem;
+    width: 68px;
+    height: auto;
+    z-index: 100;
+    transition: transform var(--t);
 }
+.mascot:hover { transform: scale(1.1) rotate(-5deg); }
 
-@media (max-width: 520px) {
-	.register-card {
-		padding: 1.5rem 0.7rem 1.2rem 0.7rem;
-		margin-top: 2.5rem;
-	}
-	.mascot {
-		width: 60px;
-		right: 1vw;
-		bottom: 1vw;
-	}
+@media (max-width: 480px) {
+    body { padding: var(--sp-md); }
+    .register-card { padding: var(--sp-lg) var(--sp-md); }
+    .mascot { width: 52px; }
 }

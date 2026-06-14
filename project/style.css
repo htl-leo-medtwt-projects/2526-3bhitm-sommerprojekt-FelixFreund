@@ -1,29 +1,39 @@
-:root {
-    --primary-color: #8B1E3F;
-    --secondary-color: #FCFCFC;
-    --text-color: #52555c;
-    --background: #f6f1f4;
-    --font-family: 'Inter', 'Instrument Serif', 'Jeju Gothic', sans-serif;
-}
-a{
-    text-decoration: none;
-    color: inherit;
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@500;700&display=swap');
 
+:root {
+    --primary:        #8B1E3F;
+    --primary-light:  #c73560;
+    --primary-glow:   rgba(139, 30, 63, 0.12);
+    --primary-faint:  rgba(139, 30, 63, 0.06);
+    --surface:        #ffffff;
+    --surface-tint:   #fdf5f8;
+    --bg:             #f6f0f3;
+    --text:           #2d2633;
+    --text-muted:     #7a6e74;
+    --border:         rgba(139, 30, 63, 0.12);
+    --radius-sm:      10px;
+    --radius-md:      18px;
+    --radius-lg:      28px;
+    --radius-xl:      36px;
+    --shadow-sm:      0 2px 8px rgba(139, 30, 63, 0.06);
+    --shadow-md:      0 8px 32px rgba(139, 30, 63, 0.10);
+    --shadow-lg:      0 20px 60px rgba(139, 30, 63, 0.13);
+    --font-display:   'Playfair Display', serif;
+    --font-body:      'Inter', sans-serif;
+    --transition:     0.22s ease;
 }
-* {
-    box-sizing: border-box;
-}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
 html, body {
-    margin: 0;
     min-height: 100%;
+    font-family: var(--font-body);
+    background: var(--bg);
+    color: var(--text);
+    -webkit-font-smoothing: antialiased;
 }
 
-body {
-    font-family: var(--font-family);
-    background: var(--background);
-    color: var(--text-color);
-}
+a { text-decoration: none; color: inherit; }
 
 .page-shell {
     min-height: 100vh;
@@ -34,12 +44,13 @@ body {
 }
 
 .hero-card {
-    width: min(100%, 520px);
+    width: min(100%, 480px);
     text-align: center;
-    padding: 2.5rem 1.75rem;
-    border-radius: 24px;
-    background: white;
-    border: 1px solid rgba(139, 30, 63, 0.12);
+    padding: 3rem 2.25rem 2.5rem;
+    border-radius: var(--radius-xl);
+    background: var(--surface);
+    border: 1px solid var(--border);
+    box-shadow: var(--shadow-lg);
     position: relative;
 }
 
@@ -51,78 +62,81 @@ body {
 }
 
 .card-symbol {
-    font-size: 2rem;
-    color: var(--primary-color);
-    opacity: 0.7;
+    font-size: 1.75rem;
+    color: var(--primary);
+    opacity: 0.6;
 }
 
 #logo {
-    width: 80px;
+    width: 72px;
     height: auto;
-    margin-bottom: 1.25rem;
+    margin-bottom: 1rem;
 }
 
 h1 {
-    margin: 0;
-    font-size: clamp(2.8rem, 4vw, 4rem);
-    color: var(--primary-color);
+    font-family: var(--font-display);
+    font-size: clamp(2.4rem, 4vw, 3.5rem);
+    color: var(--primary);
+    letter-spacing: -0.01em;
 }
 
 .tagline {
-    margin: 1.25rem auto 2rem;
-    color: var(--text-color);
+    margin: 1rem auto 2rem;
+    color: var(--text-muted);
     font-size: 1rem;
-    line-height: 1.6;
-    max-width: 32rem;
+    line-height: 1.65;
+    max-width: 30rem;
 }
 
-.actions {
-    display: grid;
-    gap: 0.9rem;
-}
+.actions { display: grid; gap: 0.8rem; }
 
 .btn {
     width: 100%;
     border: none;
-    border-radius: 14px;
-    padding: 0.95rem 1.2rem;
+    border-radius: var(--radius-md);
+    padding: 1rem 1.25rem;
     font-size: 1rem;
-    font-weight: 700;
+    font-weight: 600;
     cursor: pointer;
+    transition: transform var(--transition), box-shadow var(--transition);
 }
 
 .btn-primary {
-    background-color: var(--primary-color);
+    background: linear-gradient(135deg, var(--primary), var(--primary-light));
     color: white;
+    box-shadow: 0 4px 16px rgba(139, 30, 63, 0.28);
+}
+
+.btn-primary:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 8px 24px rgba(139, 30, 63, 0.35);
 }
 
 .btn-secondary {
     background: transparent;
-    color: var(--primary-color);
-    border: 1.5px solid rgba(139, 30, 63, 0.22);
+    color: var(--primary);
+    border: 1.5px solid var(--border);
+}
+
+.btn-secondary:hover {
+    background: var(--primary-faint);
 }
 
 .mascot {
-    position: absolute;
-   right: 0.1%;
-    bottom: 1%;
-    width: 5rem;
-    max-width: 210px;
+    position: fixed;
+    right: 1.25rem;
+    bottom: 1.25rem;
+    width: 72px;
+    height: auto;
+    cursor: pointer;
+    transition: transform var(--transition);
+    z-index: 100;
 }
+.mascot:hover { transform: scale(1.1) rotate(-5deg); }
 
 @media (max-width: 520px) {
-    .hero-card {
-        padding: 1.75rem 1.25rem;
-    }
+    .hero-card { padding: 2rem 1.25rem; }
+    .mascot { width: 56px; }
+}
 
-    .mascot {
-        right: 1rem;
-        bottom: 1rem;
-        width: 140px;
-    }
-}
-#icon_ {
-    width: 20px;
-    height: 20px;
-    margin-right: 0.5rem;
-}
+.icon_ { width: 140px; height: 140px; margin-right: 0.4rem; }

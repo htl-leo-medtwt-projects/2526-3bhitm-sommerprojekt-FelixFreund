@@ -151,15 +151,15 @@ $conn->close();
                             <label class="input-label">Art des Treffens</label>
                             <div class="activity-options">
                                 <button type="button" class="activity-btn selected" data-value="Kaffee">
-                                     <img class="icons_" src="../img/cof_mugmug.png" alt="">
+                                     <img class="icons_" src="../img/mug.png" alt="">
                                     Kaffee
                                 </button>
                                 <button type="button" class="activity-btn" data-value="Spaziergang">
-                                   
+                                   <img class="icons_" src="../img/spaziergang.png" alt="">
                                     Spaziergang
                                 </button>
                                 <button type="button" class="activity-btn" data-value="Restaurant">
-                                    
+                                    <img class="icons_" src="../img/diner.png" alt="">
                                     Restaurant
                                 </button>
                             </div>
