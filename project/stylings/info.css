@@ -229,6 +229,7 @@ a { text-decoration: none; color: inherit; }
     padding: var(--sp-lg);
     box-shadow: var(--sh-sm);
     transition: transform var(--t), box-shadow var(--t);
+    text-align: center;
 }
 .feature-card:hover {
     transform: translateY(-4px);
@@ -314,7 +315,7 @@ a { text-decoration: none; color: inherit; }
     width: 90px;
     height: auto;
     right: var(--sp-md);
-    bottom: var(--sp-md);
+    top: 452%;
     z-index: 10;
     transition: transform var(--t);
 }
@@ -324,6 +325,7 @@ a { text-decoration: none; color: inherit; }
     width: 80px;
     height: auto;
     margin-bottom: var(--sp-sm);
+   
 }
 
 @media (max-width: 768px) {
